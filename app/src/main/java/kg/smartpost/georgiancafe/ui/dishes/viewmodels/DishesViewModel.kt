@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kg.smartpost.georgiancafe.data.network.NetworkResponse
-import kg.smartpost.georgiancafe.data.network.basket.Basket
+import kg.smartpost.georgiancafe.data.local.basket.Basket
 import kg.smartpost.georgiancafe.data.network.category.model.ModelCategory
 import kg.smartpost.georgiancafe.data.network.category.repo.CategoryRepository
 import kg.smartpost.georgiancafe.data.network.dishes.model.ModelDishes
@@ -35,5 +35,5 @@ class DishesViewModel @Inject constructor(
     }
     fun clearBasket() = basket.clearBasket()
 
-    fun addDish(dishID: Int, dishCount: Int, price: Int, priceForOneItem: Int? = null, dishName: String) = basket.addDish(dishID = dishID, actualCount = dishCount, price, priceForOneItem, dishName)
+    fun addDish(dishCount: Int, dish: ModelDishes.CatDish.Dishes) = basket.addDish(dishCount, dish)
 }

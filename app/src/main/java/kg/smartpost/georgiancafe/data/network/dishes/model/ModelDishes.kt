@@ -35,6 +35,8 @@ data class ModelDishes(
             val recept: String,
             val updated: String,
             val weight: String
-        )
+        ){
+            fun hasPricesForOneItem() = min.toInt() >= 3
+        }
     }
 }

@@ -23,7 +23,7 @@ import kg.smartpost.georgiancafe.BuildConfig
 import kg.smartpost.georgiancafe.R
 import kg.smartpost.georgiancafe.data.local.UserPreferencesViewModel
 import kg.smartpost.georgiancafe.data.network.NetworkResponse
-import kg.smartpost.georgiancafe.data.network.basket.Basket
+import kg.smartpost.georgiancafe.data.local.basket.Basket
 import kg.smartpost.georgiancafe.databinding.ActivityMainBinding
 import kg.smartpost.georgiancafe.ui.category.utils.MenuCategoriesRecyclerViewAdapter
 import kg.smartpost.georgiancafe.ui.category.viewmodels.CategoryViewModel
@@ -114,10 +114,11 @@ class MainActivity : AppCompatActivity(), MenuCategoriesRecyclerViewAdapter.Cate
                     appBarMain.dishCount.text = "${it.size}"
                     if (it.size > 0){
                         appBarMain.dishImage.setOnClickListener {
-                            Toast.makeText(it.context, "appBarMain.dishImage", Toast.LENGTH_SHORT).show()
+                            navController.navigate(R.id.basketFragment)
                         }
                     } else {
                         appBarMain.dishImage.setOnClickListener {
+
                         }
                     }
                 }

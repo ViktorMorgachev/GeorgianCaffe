@@ -17,9 +17,10 @@ import kg.smartpost.georgiancafe.data.network.dishes.model.ModelDishes
 import kg.smartpost.georgiancafe.databinding.ItemCategoryBinding
 import kg.smartpost.georgiancafe.databinding.ItemDishesBinding
 import kg.smartpost.georgiancafe.utils.API_BASE_URL
+import kotlinx.android.synthetic.main.item_dishes.view.*
 
 
-class DishesRecyclerViewAdapter(val onChangeDishCounterAction: (Int, Int, Int, Int?, String)->Unit) : ListAdapter<ModelDishes.CatDish.Dishes, DishesRecyclerViewAdapter.ViewHolderCat>(DIFF) {
+class DishesRecyclerViewAdapter(val onChangeDishCounterAction: (Int, ModelDishes.CatDish.Dishes)->Unit) : ListAdapter<ModelDishes.CatDish.Dishes, DishesRecyclerViewAdapter.ViewHolderCat>(DIFF) {
 
 
     fun getItemAtPos(position: Int): ModelDishes.CatDish.Dishes {
@@ -36,47 +37,47 @@ class DishesRecyclerViewAdapter(val onChangeDishCounterAction: (Int, Int, Int, I
         fun onBind(position: Int) {
             val current = getItemAtPos(position)
 
-            if (!current.link_photo.isNullOrEmpty())
-                Glide.with(binding.root).load("${API_BASE_URL}admin/${current.link_photo}.jpg")
-                    .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
-                    .into(binding.imgDishes)
+            with(binding){
+                if (!current.link_photo.isNullOrEmpty())
+                    Glide.with(binding.root).load("${API_BASE_URL}admin/${current.link_photo}.jpg")
+                        .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
+                        .into(binding.imgDishes)
 
-            binding.txtDishes.text = "${current.name}"
-            binding.txtWeight.text = "${current.weight} ${current.edinic}"
-            binding.txtCost.text = "${current.cost}"
+                txtDishes.text = "${current.name}"
+                txtWeight.text = "${current.weight} ${current.edinic}"
+                txtCost.text = "${current.cost}"
 
-            binding.btnPlus.setOnClickListener {
-                var total = binding.txtTotal.text.toString().toInt()
-                if (total == 0) {
-                    total += current.min.toInt()
-                } else {
-                    total++
-                }
-                var cost = current.cost.toInt()
-                cost *= total
-                binding.txtCost.text = "$cost"
-                binding.txtTotal.text = total.toString()
-                val priceForOneItem = if(current.min.toInt() > 3) null else current.cost.toInt()
-                onChangeDishCounterAction.invoke(current.id.toInt(),  binding.txtTotal.text.toString().toInt(), binding.txtCost.text.toString().toInt(), priceForOneItem, current.name)
-            }
-
-            binding.btnMinus.setOnClickListener {
-                var total = binding.txtTotal.text.toString().toInt()
-                var cost = current.cost.toInt()
-                if (total == current.min.toInt()) {
-                    total = 0
-                } else {
-                    if (total != 0) {
-                        total--
-                        cost *= total
+                btnPlus.setOnClickListener {
+                    var total = txtTotal.text.toString().toInt()
+                    if (total == 0) {
+                        total += current.min.toInt()
+                    } else {
+                        total++
                     }
+                    var cost = current.cost.toInt()
+                    cost *= total
+                    txtCost.text = "$cost"
+                    txtTotal.text = total.toString()
+                    onChangeDishCounterAction.invoke(txtTotal.text.toString().toInt(), current)
                 }
-                binding.txtCost.text = cost.toString()
-                binding.txtTotal.text = total.toString()
-                // dishID: Int, dishCount: Int, price: Int, priceForOneItem: Int? = null, dishName: String
-                val priceForOneItem = if(current.min.toInt() > 3) null else current.cost.toInt()
-                onChangeDishCounterAction.invoke(current.id.toInt(),  binding.txtTotal.text.toString().toInt(), binding.txtCost.text.toString().toInt(), priceForOneItem, current.name)
+
+                btnMinus.setOnClickListener {
+                    var total = txtTotal.text.toString().toInt()
+                    var cost = current.cost.toInt()
+                    if (total == current.min.toInt()) {
+                        total = 0
+                    } else {
+                        if (total != 0) {
+                            total--
+                            cost *= total
+                        }
+                    }
+                    txtCost.text = cost.toString()
+                    txtTotal.text = total.toString()
+                    onChangeDishCounterAction.invoke(txtTotal.text.toString().toInt(), current)
+                }
             }
+
 
         }
 

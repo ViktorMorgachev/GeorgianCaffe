@@ -15,4 +15,8 @@
         android:name="kg.smartpost.georgiancafe.ui.dishes.DishesFragment"
         android:label="fragment_dishes"
         tools:layout="@layout/fragment_dishes" />
+    <fragment
+        android:id="@+id/basketFragment"
+        android:name="kg.smartpost.georgiancafe.ui.basket.BasketFragment"
+        android:label="BasketFragment" />
 </navigation>

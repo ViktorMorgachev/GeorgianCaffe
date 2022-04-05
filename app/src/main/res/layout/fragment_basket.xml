@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerBasketOrders"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="5"
+                app:layout_constraintBottom_toTopOf="@id/text_common_price_order"
+                tools:listitem="@layout/basket_item"
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/text_common_price_order"
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/recyclerBasketOrders"
+                android:text="Общая сумма заказа:"
+                app:layout_constraintBottom_toTopOf="@id/text_common_with_discount"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_height="wrap_content"
+                style="@style/dish_text_style">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/text_common_price_order_value"
+                android:layout_width="wrap_content"
+                tools:text="1880 руб."
+                style="@style/dish_text_style"
+                android:layout_margin="0dp"
+                android:paddingEnd="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/text_common_price_order"
+                app:layout_constraintTop_toTopOf="@id/text_common_price_order"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/text_common_with_discount"
+                android:layout_width="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/text_common_price_result"
+                app:layout_constraintTop_toBottomOf="@id/text_common_price_order"
+                style="@style/dish_text_style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:id="@+id/text_common_with_discount_value"
+                android:layout_width="wrap_content"
+                tools:text="1786 руб."
+                style="@style/dish_text_style"
+                android:layout_margin="0dp"
+                android:paddingEnd="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/text_common_with_discount"
+                app:layout_constraintTop_toTopOf="@id/text_common_with_discount"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:id="@+id/text_common_price_result"
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/text_common_with_discount"
+                android:text="Сумма к оплате:"
+                app:layout_constraintBottom_toTopOf="@id/edit_name"
+                style="@style/dish_text_style"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:id="@+id/text_common_price_result_value"
+                android:layout_width="wrap_content"
+                tools:text=" 1786 руб."
+                style="@style/dish_text_style"
+                android:layout_margin="0dp"
+                android:paddingEnd="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/text_common_price_result"
+                app:layout_constraintTop_toTopOf="@id/text_common_price_result"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <EditText
+                android:id="@+id/edit_name"
+                app:layout_constraintTop_toBottomOf="@id/text_common_price_result"
+                app:layout_constraintBottom_toTopOf="@id/edit_adress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/basket_edit_text">
+            </EditText>
+
+            <EditText
+                android:id="@+id/edit_adress"
+                app:layout_constraintTop_toBottomOf="@id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/edit_phone"
+                style="@style/basket_edit_text">
+            </EditText>
+
+            <EditText
+                android:id="@+id/edit_phone"
+                app:layout_constraintTop_toBottomOf="@id/edit_adress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/create_order"
+                style="@style/basket_edit_text">
+            </EditText>
+
+            <Button
+                android:id="@+id/create_order"
+                android:layout_width="0dp"
+                android:layout_marginVertical="8dp"
+                android:text="Оформить заказ"
+                app:layout_constraintWidth_percent="0.5"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_phone"
+                android:background="@drawable/bg_btn_plus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

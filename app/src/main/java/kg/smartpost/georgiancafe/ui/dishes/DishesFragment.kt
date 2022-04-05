@@ -122,9 +122,9 @@ class DishesFragment : Fragment(), CategoryRecyclerViewAdapter.CategoryClickList
                         binding.categoryList.adapter = categoryAdapter
                         categoryAdapter.submitList(dishes.cat_dish.category)
 
-                        val dishesAdapter = DishesRecyclerViewAdapter(){ dishID, dishCount, price, priceForOneItem, dishName ->
+                        val dishesAdapter = DishesRecyclerViewAdapter(){  dishCount, dish ->
                             lifecycleScope.launchWhenResumed {
-                                dishesViewModel.addDish(dishID, dishCount, price, priceForOneItem, dishName).collect()
+                                dishesViewModel.addDish(dishCount, dish ).collect()
                             }
                         }
                         binding.dishesList.adapter = dishesAdapter
@@ -150,9 +150,9 @@ class DishesFragment : Fragment(), CategoryRecyclerViewAdapter.CategoryClickList
 
     override fun onCategoryClick(position: Int, id: Int) {
         hochu_cat = id
-        val adapter = DishesRecyclerViewAdapter(){  dishID, dishCount, price, priceForOneItem, dishName ->
+        val adapter = DishesRecyclerViewAdapter(){  dishCount, dish ->
             lifecycleScope.launchWhenResumed {
-                dishesViewModel.addDish(dishID, dishCount, price, priceForOneItem, dishName).collect()
+                dishesViewModel.addDish(dishCount, dish ).collect()
             }
         }
         binding.dishesList.adapter = adapter

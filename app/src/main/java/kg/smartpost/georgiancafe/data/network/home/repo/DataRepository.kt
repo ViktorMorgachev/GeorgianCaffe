@@ -22,4 +22,5 @@ class DataRepository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
+
 }

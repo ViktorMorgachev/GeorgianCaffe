@@ -17,5 +17,8 @@ data class ModelData(
         val title_kod: String,
         val text: String,
         val text_size: String,
+        val cart_name: String? = "",
+        val cart_phone: String? = "",
+        val cart_address: String? = "",
     )
 }
