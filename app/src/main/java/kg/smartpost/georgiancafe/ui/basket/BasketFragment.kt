@@ -1,5 +1,6 @@
 package kg.smartpost.georgiancafe.ui.basket
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kg.smartpost.georgiancafe.data.local.basket.BasketOrder
 import kg.smartpost.georgiancafe.data.network.NetworkResponse
 import kg.smartpost.georgiancafe.databinding.FragmentBasketBinding
+import kg.smartpost.georgiancafe.ui.utils.EventListener
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
@@ -34,8 +36,49 @@ class BasketFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         with(binding){
             createOrder.setOnClickListener {
+
+
+
                 if (editAdress.text.isNotEmpty() && editName.text.isNotEmpty() && editPhone.text.isNotEmpty()){
-                   Toast.makeText(requireContext(), "Оформить заказ", Toast.LENGTH_LONG).show()
+
+                    lifecycleScope.launchWhenResumed {
+                        basketViewModel.createOrder(basketViewModel.basket.data.value, userName = editName.text.toString(), userPhone = editPhone.text.toString(), userAddress = editAdress.text.toString()).collect { response->
+                            when (response) {
+                                is NetworkResponse.Success -> {
+                                    Toast.makeText(requireContext(), "Оформить заказ: Success", Toast.LENGTH_LONG).show()
+                                }
+
+                                is NetworkResponse.Error -> {
+                                    Toast.makeText(requireContext(), "Оформить заказ: Error", Toast.LENGTH_LONG).show()
+                                }
+
+                                is NetworkResponse.Loading -> {
+                                    Toast.makeText(requireContext(), "Оформить заказ: Loading", Toast.LENGTH_LONG).show()
+                                }
+                            }
+
+                        }
+                    }
+
+                } else {
+                    lifecycleScope.launchWhenResumed {
+                        basketViewModel.createOrder(basketViewModel.basket.data.value, userName = "Вася", userPhone = "+79210405416", userAddress = "Moskow").collect { response->
+                            when (response) {
+                                is NetworkResponse.Success -> {
+                                    Toast.makeText(requireContext(), "Оформить заказ: Success", Toast.LENGTH_LONG).show()
+                                }
+
+                                is NetworkResponse.Error -> {
+                                    Toast.makeText(requireContext(), "Оформить заказ: Error", Toast.LENGTH_LONG).show()
+                                }
+
+                                is NetworkResponse.Loading -> {
+                                    Toast.makeText(requireContext(), "Оформить заказ: Loading", Toast.LENGTH_LONG).show()
+                                }
+                            }
+
+                        }
+                    }
                 }
             }
 
@@ -75,7 +118,6 @@ class BasketFragment : Fragment() {
                                         calculateTotalPriceInfo()
                                     }
                                 }
-
                             },
                             onActionAddDishAction = { actualCount, dish ->
                                 lifecycleScope.launchWhenResumed {
@@ -100,6 +142,5 @@ class BasketFragment : Fragment() {
             textCommonPriceResultValue.text = "${resultPrice} руб"
         }
     }
-
 
 }

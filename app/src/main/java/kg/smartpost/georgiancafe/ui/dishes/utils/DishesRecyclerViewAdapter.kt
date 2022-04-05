@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import dagger.hilt.android.HiltAndroidApp
 import kg.smartpost.georgiancafe.R
+import kg.smartpost.georgiancafe.data.local.basket.Basket
 import kg.smartpost.georgiancafe.data.network.category.model.ModelCategory
 import kg.smartpost.georgiancafe.data.network.dishes.model.ModelDishes
 import kg.smartpost.georgiancafe.databinding.ItemCategoryBinding
@@ -19,14 +21,11 @@ import kg.smartpost.georgiancafe.databinding.ItemDishesBinding
 import kg.smartpost.georgiancafe.utils.API_BASE_URL
 import kotlinx.android.synthetic.main.item_dishes.view.*
 
-
-class DishesRecyclerViewAdapter(val onChangeDishCounterAction: (Int, ModelDishes.CatDish.Dishes)->Unit) : ListAdapter<ModelDishes.CatDish.Dishes, DishesRecyclerViewAdapter.ViewHolderCat>(DIFF) {
-
+class DishesRecyclerViewAdapter(val basket: Basket, val onChangeDishCounterAction: (Int, ModelDishes.CatDish.Dishes)->Unit) : ListAdapter<ModelDishes.CatDish.Dishes, DishesRecyclerViewAdapter.ViewHolderCat>(DIFF) {
 
     fun getItemAtPos(position: Int): ModelDishes.CatDish.Dishes {
         return getItem(position)
     }
-
     private var _binding: ItemDishesBinding? = null
 
     inner class ViewHolderCat(private val binding: ItemDishesBinding) :
@@ -46,6 +45,7 @@ class DishesRecyclerViewAdapter(val onChangeDishCounterAction: (Int, ModelDishes
                 txtDishes.text = "${current.name}"
                 txtWeight.text = "${current.weight} ${current.edinic}"
                 txtCost.text = "${current.cost}"
+
 
                 btnPlus.setOnClickListener {
                     var total = txtTotal.text.toString().toInt()
@@ -76,13 +76,14 @@ class DishesRecyclerViewAdapter(val onChangeDishCounterAction: (Int, ModelDishes
                     txtTotal.text = total.toString()
                     onChangeDishCounterAction.invoke(txtTotal.text.toString().toInt(), current)
                 }
+                basket.data.value.firstOrNull { it.dish.id == current.id }?.let {
+                    txtCost.text = (it.count * current.cost.toInt()).toString()
+                    txtTotal.text = it.count.toString()
+                }
             }
-
-
         }
 
     }
-
     override fun getItemViewType(position: Int): Int {
         return position
     }

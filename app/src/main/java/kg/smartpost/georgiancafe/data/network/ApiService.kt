@@ -13,6 +13,12 @@ interface ApiService {
         @Query("page") page: String,
     ): Response<ModelData>
 
+
+    @POST("api.php")
+    suspend fun createOrder(
+        @Body requestData: String
+    ): Response<Any>
+
     @GET("api.php")
     suspend fun getCategory(
         @Query("page") page: String,

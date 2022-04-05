@@ -6,11 +6,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kg.smartpost.georgiancafe.data.local.basket.Basket
 import kg.smartpost.georgiancafe.data.local.basket.BasketOrder
 import kg.smartpost.georgiancafe.data.network.NetworkResponse
+import kg.smartpost.georgiancafe.data.network.create_order.repo.CreateOrderRepository
 import kg.smartpost.georgiancafe.data.network.dishes.model.ModelDishes
 import kg.smartpost.georgiancafe.data.network.home.model.ModelData
 import kg.smartpost.georgiancafe.data.network.home.repo.DataRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,6 +22,7 @@ class BasketViewModel @Inject constructor
     (
     val basket: Basket,
     private val dataRepository: DataRepository,
+    private val createOrderRepository: CreateOrderRepository,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -37,7 +42,8 @@ class BasketViewModel @Inject constructor
 
     fun deleteDish(dish: ModelDishes.CatDish.Dishes) = basket.deleteDish(dish)
 
-    fun createOrder(order: List<BasketOrder>, userName: String, userPhone: String, userAddress: String) = flow<Boolean>{
-
+    suspend fun createOrder(orders: List<BasketOrder>, userName: String, userPhone: String, userAddress: String) : Flow<NetworkResponse<Any>>{
+        return createOrderRepository.createOrder(orders, userName, userPhone, userAddress)
     }
+
 }

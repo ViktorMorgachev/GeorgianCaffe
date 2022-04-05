@@ -8,7 +8,7 @@ data class CreateOrder(
     val type: Int = 0
 ) {
     data class Order(
-        val count: Int? = 0,
-        val id: Int? = 0
+        val count: Int = 0,
+        val id: Int = 0
     )
 }

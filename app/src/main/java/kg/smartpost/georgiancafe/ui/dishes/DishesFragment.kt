@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.*
 import dagger.hilt.android.AndroidEntryPoint
 import kg.smartpost.georgiancafe.data.local.UserPreferencesViewModel
+import kg.smartpost.georgiancafe.data.local.basket.Basket
 import kg.smartpost.georgiancafe.data.network.NetworkResponse
 import kg.smartpost.georgiancafe.data.network.dishes.model.ModelDishes
 import kg.smartpost.georgiancafe.databinding.FragmentDishesBinding
@@ -24,6 +25,7 @@ import kg.smartpost.georgiancafe.utils.MyState
 import kg.smartpost.georgiancafe.utils.NetworkStatusTracker
 import kg.smartpost.georgiancafe.utils.NetworkStatusViewModel
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DishesFragment : Fragment(), CategoryRecyclerViewAdapter.CategoryClickListener {
@@ -33,6 +35,9 @@ class DishesFragment : Fragment(), CategoryRecyclerViewAdapter.CategoryClickList
     private val dishesViewModel by viewModels<DishesViewModel>()
     private var _binding: FragmentDishesBinding? = null
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var basket: Basket
 
     private val page = "menu"
 
@@ -58,7 +63,6 @@ class DishesFragment : Fragment(), CategoryRecyclerViewAdapter.CategoryClickList
 
     override fun onResume() {
         super.onResume()
-     //   dishesViewModel.clearBasket()
     }
 
     override fun onCreateView(
@@ -122,7 +126,7 @@ class DishesFragment : Fragment(), CategoryRecyclerViewAdapter.CategoryClickList
                         binding.categoryList.adapter = categoryAdapter
                         categoryAdapter.submitList(dishes.cat_dish.category)
 
-                        val dishesAdapter = DishesRecyclerViewAdapter(){  dishCount, dish ->
+                        val dishesAdapter = DishesRecyclerViewAdapter(basket){  dishCount, dish ->
                             lifecycleScope.launchWhenResumed {
                                 dishesViewModel.addDish(dishCount, dish ).collect()
                             }
@@ -150,7 +154,7 @@ class DishesFragment : Fragment(), CategoryRecyclerViewAdapter.CategoryClickList
 
     override fun onCategoryClick(position: Int, id: Int) {
         hochu_cat = id
-        val adapter = DishesRecyclerViewAdapter(){  dishCount, dish ->
+        val adapter = DishesRecyclerViewAdapter(basket){  dishCount, dish ->
             lifecycleScope.launchWhenResumed {
                 dishesViewModel.addDish(dishCount, dish ).collect()
             }

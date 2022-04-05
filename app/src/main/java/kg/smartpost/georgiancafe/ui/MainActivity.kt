@@ -115,6 +115,8 @@ class MainActivity : AppCompatActivity(), MenuCategoriesRecyclerViewAdapter.Cate
                     if (it.size > 0){
                         appBarMain.dishImage.setOnClickListener {
                             navController.navigate(R.id.basketFragment)
+                            binding.appBarMain.txtPhone.text = "Корзина"
+                            binding.appBarMain.txtPhone.visibility = View.VISIBLE
                         }
                     } else {
                         appBarMain.dishImage.setOnClickListener {
@@ -139,7 +141,6 @@ class MainActivity : AppCompatActivity(), MenuCategoriesRecyclerViewAdapter.Cate
             super.onBackPressed()
         } else {
             supportFragmentManager.popBackStack()
-
         }
     }
 
