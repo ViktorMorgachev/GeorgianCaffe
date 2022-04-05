@@ -7,6 +7,7 @@ import kg.smartpost.georgiancafe.data.local.basket.Basket
 import kg.smartpost.georgiancafe.data.local.basket.BasketOrder
 import kg.smartpost.georgiancafe.data.network.NetworkResponse
 import kg.smartpost.georgiancafe.data.network.create_order.repo.CreateOrderRepository
+import kg.smartpost.georgiancafe.data.network.create_order.response.ResponseFromServer
 import kg.smartpost.georgiancafe.data.network.dishes.model.ModelDishes
 import kg.smartpost.georgiancafe.data.network.home.model.ModelData
 import kg.smartpost.georgiancafe.data.network.home.repo.DataRepository
@@ -42,7 +43,7 @@ class BasketViewModel @Inject constructor
 
     fun deleteDish(dish: ModelDishes.CatDish.Dishes) = basket.deleteDish(dish)
 
-    suspend fun createOrder(orders: List<BasketOrder>, userName: String, userPhone: String, userAddress: String) : Flow<NetworkResponse<Any>>{
+    suspend fun createOrder(orders: List<BasketOrder>, userName: String, userPhone: String, userAddress: String) : Flow<NetworkResponse<ResponseFromServer>>{
         return createOrderRepository.createOrder(orders, userName, userPhone, userAddress)
     }
 

@@ -45,7 +45,14 @@ class BasketFragment : Fragment() {
                         basketViewModel.createOrder(basketViewModel.basket.data.value, userName = editName.text.toString(), userPhone = editPhone.text.toString(), userAddress = editAdress.text.toString()).collect { response->
                             when (response) {
                                 is NetworkResponse.Success -> {
-                                    Toast.makeText(requireContext(), "Оформить заказ: Success", Toast.LENGTH_LONG).show()
+                                    if (response.data?.ok == true){
+                                        Toast.makeText(requireContext(), "Заказ оформлен", Toast.LENGTH_LONG).show()
+                                        basketViewModel.basket.clearBasket()
+                                        requireActivity().onBackPressed()
+                                    } else {
+                                        Toast.makeText(requireContext(), "Ошибка ${response.data?.answer ?: ""}", Toast.LENGTH_LONG).show()
+                                    }
+
                                 }
 
                                 is NetworkResponse.Error -> {
@@ -61,11 +68,18 @@ class BasketFragment : Fragment() {
                     }
 
                 } else {
-                    lifecycleScope.launchWhenResumed {
+                   /* lifecycleScope.launchWhenResumed {
                         basketViewModel.createOrder(basketViewModel.basket.data.value, userName = "Вася", userPhone = "+79210405416", userAddress = "Moskow").collect { response->
                             when (response) {
                                 is NetworkResponse.Success -> {
-                                    Toast.makeText(requireContext(), "Оформить заказ: Success", Toast.LENGTH_LONG).show()
+                                    if (response.data?.ok == true){
+                                        Toast.makeText(requireContext(), "Заказ оформлен", Toast.LENGTH_LONG).show()
+                                        basketViewModel.basket.clearBasket()
+                                        requireActivity().onBackPressed()
+                                    } else {
+                                        Toast.makeText(requireContext(), "Ошибка ${response.data?.answer ?: ""}", Toast.LENGTH_LONG).show()
+                                    }
+
                                 }
 
                                 is NetworkResponse.Error -> {
@@ -78,7 +92,7 @@ class BasketFragment : Fragment() {
                             }
 
                         }
-                    }
+                    }*/
                 }
             }
 

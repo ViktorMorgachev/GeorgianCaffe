@@ -1,6 +1,8 @@
 package kg.smartpost.georgiancafe.data.network
 
 import kg.smartpost.georgiancafe.data.network.category.model.ModelCategory
+import kg.smartpost.georgiancafe.data.network.create_order.CreateOrder
+import kg.smartpost.georgiancafe.data.network.create_order.response.ResponseFromServer
 import kg.smartpost.georgiancafe.data.network.dishes.model.ModelDishes
 import kg.smartpost.georgiancafe.data.network.home.model.ModelData
 import retrofit2.Response
@@ -14,10 +16,20 @@ interface ApiService {
     ): Response<ModelData>
 
 
-    @POST("api.php")
+    @FormUrlEncoded
+    @POST("api.php/?page=create_order")
     suspend fun createOrder(
-        @Body requestData: String
-    ): Response<Any>
+        @Field("address")
+        address: String,
+        @Field("client_name")
+        clientName: String,
+        @Field("client_phone")
+        clientPhone: String,
+        @Field("type")
+        type: Int,
+        @Field("card[]")
+        orders: List<CreateOrder.Order>,
+    ): Response<ResponseFromServer>
 
     @GET("api.php")
     suspend fun getCategory(
